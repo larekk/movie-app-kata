@@ -22,7 +22,6 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
 
   function mediaChange(width) {
     if (width.matches) {
-      // If media query matches
       return (movieCard = (
         <ContextGenres.Consumer>
           {(genres) => {

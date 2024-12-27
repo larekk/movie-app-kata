@@ -81,6 +81,7 @@ export default function App() {
       .then(({ results, total_pages }) => {
         setUnratedMovieList(results)
         setUnratedTotalPages(total_pages)
+        console.log(results)
         setLoading(false)
         setError(false)
       })
@@ -98,7 +99,10 @@ export default function App() {
         setRatedTotalPages(total_pages)
         setLoading(false)
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.log(err)
+        onError()
+      })
   }
 
   async function createGuestSession(url, options) {
@@ -107,14 +111,20 @@ export default function App() {
       .then(({ guest_session_id }) => {
         setGuestSessionID(guest_session_id)
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.log(err)
+        onError()
+      })
   }
 
   async function rateMovie(options, filmId) {
     return fetch(`https://api.themoviedb.org/3/movie/${filmId}/rating?guest_session_id=${guestSessionID}`, options)
       .then((res) => res.json())
       .then((res) => res)
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.log(err)
+        onError()
+      })
   }
 
   async function getGenres() {
@@ -125,23 +135,22 @@ export default function App() {
       })
       .catch((err) => console.error(err))
   }
+  useEffect(() => {
+    getGenres()
+  }, [])
 
   useEffect(() => {
     createGuestSession('https://api.themoviedb.org/3/authentication/guest_session/new', options)
-    getGenres()
   }, [])
 
   useEffect(() => {
     getUnratedMovies(url, options)
   }, [url])
-  useEffect(() => {
-    getRatedMovies(ratedUrl)
-  }, [ratedUrl])
 
   let unratedListMovies = unratedMovieList.map((movie) => {
     const moviePoster = movie.poster_path
-      ? movie.poster_path
-      : 'https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg'
+      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+      : 'https://dummyimage.com/400x600/d1d1d1/fff&text=no+poster'
 
     const movieReleaseDate = movie.release_date
       ? format(new Date(movie.release_date.split('-').join(' ,')), 'MMMM d, y')
@@ -164,7 +173,7 @@ export default function App() {
       <ContextGenres.Provider value={genres} key={movie.id}>
         <MovieItem
           movie={movie}
-          image={`https://image.tmdb.org/t/p/w500/${moviePoster}`}
+          image={moviePoster}
           date={movieReleaseDate}
           rate={rate / 10}
           colorRate={color}
