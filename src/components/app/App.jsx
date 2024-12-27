@@ -113,7 +113,7 @@ export default function App() {
   async function rateMovie(options, filmId) {
     return fetch(`https://api.themoviedb.org/3/movie/${filmId}/rating?guest_session_id=${guestSessionID}`, options)
       .then((res) => res.json())
-      .then((res) => console.log(res))
+      .then((res) => res)
       .catch((err) => console.error(err))
   }
 
@@ -257,8 +257,14 @@ export default function App() {
       label: 'Rated',
       children: (
         <>
-          {loading ? <Spinner /> : <MoviesList>{ratedListMovies}</MoviesList>}
-          <PaginationList pages={ratedTotalPages} current={ratedCurrent} onChangePage={onChangeRatedPage} />
+          <Layout style={{ background: 'none', margin: 0, padding: 0 }}>
+            <Content style={{ background: 'none', margin: '-30px 0 0 0', padding: 0 }}>
+              {loading ? <Spinner /> : <MoviesList>{ratedListMovies}</MoviesList>}
+            </Content>
+            <Footer style={{ background: 'none', margin: 0, padding: 0 }}>
+              <PaginationList pages={ratedTotalPages} current={ratedCurrent} onChangePage={onChangeRatedPage} />
+            </Footer>
+          </Layout>
         </>
       ),
     },

@@ -23,13 +23,13 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
   function mediaChange(width) {
     if (width.matches) {
       // If media query matches
-      movieCard = (
+      return (movieCard = (
         <ContextGenres.Consumer>
           {(genres) => {
             return (
               <Card
                 hoverable
-                style={{ minWidth: '388px', minHeight: '245px', margin: '0 auto' }}
+                style={{ width: '388px', minHeight: '245px', margin: '0 auto' }}
                 styles={{ body: { padding: 0, margin: 0, overflow: 'hidden' } }}
               >
                 <Flex gap={10}>
@@ -103,7 +103,7 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
             )
           }}
         </ContextGenres.Consumer>
-      )
+      ))
     } else {
       movieCard = (
         <ContextGenres.Consumer>
@@ -191,16 +191,9 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
     }
   }
 
-  // Create a MediaQueryList object
   let width = window.matchMedia('(max-width: 500px)')
 
-  // Call listener function at run time
   mediaChange(width)
-
-  // Attach listener function on state changes
-  width.addEventListener('change', function () {
-    mediaChange(width)
-  })
 
   return movieCard
 }
