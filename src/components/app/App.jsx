@@ -81,7 +81,6 @@ export default function App() {
       .then(({ results, total_pages }) => {
         setUnratedMovieList(results)
         setUnratedTotalPages(total_pages)
-        console.log(results)
         setLoading(false)
         setError(false)
       })
