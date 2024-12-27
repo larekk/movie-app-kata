@@ -6,7 +6,7 @@ export default function Search({ searchUnratedFilms, setSearchLoading }) {
       <Input
         placeholder="Type to search..."
         style={{ maxWidth: '944px' }}
-        onKeyUp={(e) => {
+        onChange={(e) => {
           setSearchLoading()
           return searchUnratedFilms(e.target.value)
         }}

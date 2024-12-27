@@ -8,7 +8,7 @@ export default function PaginationList({ pages, current, onChangePage }) {
       style={{ marginTop: '40px' }}
       onChange={onChangePage}
       current={current}
-      pageSize="20"
+      pageSize="1"
       showSizeChanger={false}
     />
   )
