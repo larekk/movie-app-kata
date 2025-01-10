@@ -11,6 +11,8 @@ import ErrorItem from '../error-item/Error-item'
 import PaginationList from '../pagination/Pagination-list'
 import Search from '../search/Search'
 import { ContextGenres } from '../genres-context/genres-context'
+import Unratedfilms from '../unrated-films/Unrated-films'
+import Ratedfilms from '../rated-films/Rated-films'
 
 export default function App() {
   const options = {
@@ -21,14 +23,6 @@ export default function App() {
         'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5YzY5MTQyZmI3NDQ4ZmQyNWMwZGFmNzI1NDMyYWMyYyIsIm5iZiI6MTczMjI3OTUwMC41Nzg2ODY1LCJzdWIiOiI2NzNiNmZkN2M2NDEyYjM2Njk2NTQ5NzUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.0Pr_lPoWZC_O62P8yuxcs9W_kDVLu0_wA0skzHocox4',
     },
   }
-  const optionsTest = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-    },
-  }
-
-  const api_key = '9c69142fb7448fd25c0daf725432ac2c'
 
   const { Header, Content, Footer } = Layout
   const [unratedMovieList, setUnratedMovieList] = useState([])
@@ -43,8 +37,8 @@ export default function App() {
   const [guestSessionID, setGuestSessionID] = useState(null)
   const [genres, setGenres] = useState(null)
 
-  const url = `https://api.themoviedb.org/3/search/movie?query=${searchResult}&include_adult=false&language=en-US&page=${unratedCurrent}`
-  const ratedUrl = `https://api.themoviedb.org/3/guest_session/${guestSessionID}/rated/movies?api_key=${api_key}&language=en-US&page=${ratedCurrent}&sort_by=created_at.asc`
+  const unratedMovies = new Unratedfilms()
+  const ratedMovies = new Ratedfilms()
 
   const onChangeUnratedPage = (page) => {
     setLoading(true)
@@ -53,11 +47,19 @@ export default function App() {
 
   const onChangeRatedPage = (page) => {
     setRatedCurrent(page)
+    setLoading(true)
   }
 
   const onChangeTab = (key) => {
     if (key === '2') {
-      return getRatedMovies(ratedUrl)
+      return ratedMovies.getRatedMovies(
+        guestSessionID,
+        ratedCurrent,
+        setRatedMovieList,
+        setRatedTotalPages,
+        setLoading,
+        setError
+      )
     }
   }
 
@@ -70,39 +72,9 @@ export default function App() {
   }
 
   const searchUnratedFilms = debounce((value) => {
+    setUnratedCurrent(1)
     return setSearchResult(value)
   }, 400)
-
-  async function getUnratedMovies(url, options) {
-    return fetch(url, options)
-      .then((res) => {
-        if (res.ok) return res.json()
-      })
-      .then(({ results, total_pages }) => {
-        setUnratedMovieList(results)
-        setUnratedTotalPages(total_pages)
-        setLoading(false)
-        setError(false)
-      })
-      .catch((err) => {
-        console.log(err)
-        onError()
-      })
-  }
-
-  async function getRatedMovies(url) {
-    return fetch(url, optionsTest)
-      .then((res) => res.json())
-      .then(({ results, total_pages }) => {
-        setRatedMovieList(results)
-        setRatedTotalPages(total_pages)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.log(err)
-        onError()
-      })
-  }
 
   async function createGuestSession(url, options) {
     fetch(url, options)
@@ -126,25 +98,32 @@ export default function App() {
       })
   }
 
-  async function getGenres() {
-    return fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', options)
-      .then((res) => res.json())
-      .then(({ genres }) => {
-        setGenres(genres)
-      })
-      .catch((err) => console.error(err))
-  }
   useEffect(() => {
-    getGenres()
-  }, [])
+    unratedMovies.getUnratedMovies(
+      searchResult,
+      unratedCurrent,
+      setUnratedMovieList,
+      setUnratedTotalPages,
+      setLoading,
+      setError
+    )
+  }, [searchResult, unratedCurrent])
 
   useEffect(() => {
+    ratedMovies.getRatedMovies(
+      guestSessionID,
+      ratedCurrent,
+      setRatedMovieList,
+      setRatedTotalPages,
+      setLoading,
+      setError
+    )
+  }, [ratedCurrent])
+
+  useEffect(() => {
+    unratedMovies.getGenres(setGenres)
     createGuestSession('https://api.themoviedb.org/3/authentication/guest_session/new', options)
   }, [])
-
-  useEffect(() => {
-    getUnratedMovies(url, options)
-  }, [url])
 
   let unratedListMovies = unratedMovieList.map((movie) => {
     const moviePoster = movie.poster_path
@@ -196,8 +175,8 @@ export default function App() {
   if (ratedMovieList) {
     ratedListMovies = ratedMovieList.map((movie) => {
       const moviePoster = movie.poster_path
-        ? movie.poster_path
-        : 'https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg'
+        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+        : 'https://dummyimage.com/400x600/d1d1d1/fff&text=no+poster'
 
       const movieReleaseDate = movie.release_date
         ? format(new Date(movie.release_date.split('-').join(' ,')), 'MMMM d, y')
@@ -220,7 +199,7 @@ export default function App() {
         <ContextGenres.Provider value={genres} key={movie.id}>
           <MovieItem
             movie={movie}
-            image={`https://image.tmdb.org/t/p/w500/${moviePoster}`}
+            image={moviePoster}
             date={movieReleaseDate}
             rate={rate / 10}
             myRate={movie.rating}

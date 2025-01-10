@@ -56,7 +56,7 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
                       {date}
                     </Typography.Text>
                     <Flex gap={4} wrap>
-                      {movieGenres ? (
+                      {genres ? (
                         movieGenres.map((movieGenre) => {
                           return (
                             <Typography.Text keyboard key={movieGenre} className={'fontOverview'}>
@@ -142,7 +142,7 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
                       {date}
                     </Typography.Text>
                     <Flex gap={4} wrap>
-                      {movieGenres ? (
+                      {genres ? (
                         movieGenres.map((movieGenre) => {
                           return (
                             <Typography.Text keyboard key={movieGenre} className={'fontOverview'}>
