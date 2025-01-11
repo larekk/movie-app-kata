@@ -15,3 +15,63 @@ body{
     font-size: 12px;
     font-style: normal;
 }
+
+.cardLowWidth{
+    width: 388px;
+    min-height: 245px;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+}
+
+.cardNormalWidth{
+    width: 482px;
+    min-height: 281px;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+.container{
+    position: relative;
+    width: 100%
+}
+
+.flexContainer{
+    padding-top: 2px;
+    padding-right: 2px
+}
+.flexContainerNormalWidth{
+    padding-top: 10px;
+    padding-right: 10px
+}
+
+.flexContentContainer{
+    margin-top: 10px;
+    padding-bottom: 50px
+}
+
+.cardTitle{
+    margin: 0;
+    max-width: 210px
+}
+
+.cardAverageRate{
+    padding-top: 6.5px;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    border: solid 2px;
+    border-radius: 100%
+}
+
+.cardDate{
+    margin-top: -10px
+}
+
+.cardRate{
+    position: absolute;
+    bottom: 10px;
+    right: 5px
+}

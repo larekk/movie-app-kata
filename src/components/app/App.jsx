@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import { Offline, Online } from 'react-detect-offline'
 import { debounce } from 'lodash'
 import { Typography, Tabs, Layout } from 'antd'
+import './app.css'
 
 import MoviesList from '../movie-list/Movie-list'
 import MovieItem from '../movie-item/Movie-item'
@@ -166,7 +167,7 @@ export default function App() {
 
   if (unratedMovieList.length === 0 && !loading) {
     unratedListMovies = (
-      <Typography.Title level={5} style={{ paddingTop: 10, margin: 0 }}>
+      <Typography.Title level={5} className={'noResults'}>
         Can&#39;t find any films with {searchResult}
       </Typography.Title>
     )
@@ -213,7 +214,7 @@ export default function App() {
     })
   } else {
     ratedListMovies = (
-      <Typography.Title level={5} style={{ paddingTop: 10, margin: 0 }}>
+      <Typography.Title level={5} className={'noResults'}>
         There is no rated films
       </Typography.Title>
     )
@@ -226,14 +227,14 @@ export default function App() {
       key: '1',
       label: 'Search',
       children: (
-        <Layout style={{ background: 'none', margin: 0, padding: 0 }}>
-          <Header style={{ background: 'none', margin: 0, padding: 0 }}>
+        <Layout className={'defaultStyle'}>
+          <Header className={'defaultStyle'}>
             <Search searchUnratedFilms={searchUnratedFilms} setSearchLoading={setSearchLoading} />
           </Header>
-          <Content style={{ background: 'none', margin: '-30px 0 0 0', padding: 0 }}>
+          <Content className={'defaultStyleMargin'}>
             {loading ? <Spinner /> : <MoviesList>{unratedListMovies}</MoviesList>}
           </Content>
-          <Footer style={{ background: 'none', margin: 0, padding: 0 }}>
+          <Footer className={'defaultStyle'}>
             <PaginationList pages={unratedTotalPages} current={unratedCurrent} onChangePage={onChangeUnratedPage} />
           </Footer>
         </Layout>
@@ -244,11 +245,11 @@ export default function App() {
       label: 'Rated',
       children: (
         <>
-          <Layout style={{ background: 'none', margin: 0, padding: 0 }}>
-            <Content style={{ background: 'none', margin: '-30px 0 0 0', padding: 0 }}>
+          <Layout className={'defaultStyle'}>
+            <Content className={'defaultStyleMargin'}>
               {loading ? <Spinner /> : <MoviesList>{ratedListMovies}</MoviesList>}
             </Content>
-            <Footer style={{ background: 'none', margin: 0, padding: 0 }}>
+            <Footer className={'defaultStyle'}>
               <PaginationList pages={ratedTotalPages} current={ratedCurrent} onChangePage={onChangeRatedPage} />
             </Footer>
           </Layout>

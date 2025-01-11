@@ -28,31 +28,26 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
             return (
               <Card
                 hoverable
-                style={{ width: '388px', minHeight: '245px', margin: '0 auto' }}
+                className={'cardLowWidth'}
                 styles={{ body: { padding: 0, margin: 0, overflow: 'hidden' } }}
               >
                 <Flex gap={10}>
                   <img width={60} height={91} alt="poster" src={image} />
-                  <Flex vertical gap={7} style={{ position: 'relative', width: '100%' }}>
-                    <Flex justify="space-between" style={{ paddingTop: 2, paddingRight: 2 }}>
-                      <Typography.Title level={5} style={{ margin: 0, maxWidth: 210 }} className={'font'}>
+                  <Flex vertical gap={7} className={'container'}>
+                    <Flex justify="space-between" className={'flexContainer'}>
+                      <Typography.Title level={5} className={'font cardTitle'}>
                         {movie.title}
                       </Typography.Title>
                       <Typography.Text
-                        className={'fontOverview'}
+                        className={'fontOverview cardAverageRate'}
                         style={{
-                          paddingTop: 6.5,
-                          width: 35,
-                          height: 35,
-                          textAlign: 'center',
-                          border: `${colorRate} solid 2px`,
-                          borderRadius: '100%',
+                          borderColor: `${colorRate} `,
                         }}
                       >
                         {rate}
                       </Typography.Text>
                     </Flex>
-                    <Typography.Text type="secondary" className={'fontOverview'} style={{ marginTop: -10 }}>
+                    <Typography.Text type="secondary" className={'fontOverview cardDate'}>
                       {date}
                     </Typography.Text>
                     <Flex gap={4} wrap>
@@ -76,13 +71,13 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
                     </Flex>
                   </Flex>
                 </Flex>
-                <Flex style={{ marginTop: 10, paddingBottom: 50 }}>
+                <Flex className={'flexContentContainer'}>
                   <Typography.Text className={'fontOverview'}>{movie.overview}</Typography.Text>
                   <Rate
                     count={10}
                     defaultValue={myRate ? myRate : 0}
                     allowHalf
-                    style={{ position: 'absolute', bottom: '10px', right: '5px' }}
+                    className={'cardRate'}
                     onChange={(e) => {
                       const rateOptions = {
                         method: 'POST',
@@ -110,29 +105,20 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
             return (
               <Card
                 hoverable
-                style={{ width: '482px', height: '281px', margin: '0 auto' }}
+                className={'cardNormalWidth'}
                 styles={{ body: { padding: 0, margin: 0, overflow: 'hidden' } }}
               >
                 <Flex gap={20}>
                   <img width={183} height={281} alt="poster" src={image} />
-                  <Flex vertical gap={7} style={{ position: 'relative', width: '100%' }}>
-                    <Flex justify="space-between" style={{ paddingTop: '10px', paddingRight: '10px' }}>
-                      <Typography.Title
-                        level={5}
-                        style={{ margin: 0, paddingTop: 5, maxWidth: 210 }}
-                        className={'font'}
-                      >
+                  <Flex vertical gap={7} className={'container'}>
+                    <Flex justify="space-between" className={'flexContainerNormalWidth'}>
+                      <Typography.Title level={5} className={'font cardTitle'}>
                         {movie.title}
                       </Typography.Title>
                       <Typography.Text
-                        className={'fontOverview'}
+                        className={'fontOverview cardAverageRate'}
                         style={{
-                          paddingTop: 6.5,
-                          width: 35,
-                          height: 35,
-                          textAlign: 'center',
-                          border: `${colorRate} solid 2px`,
-                          borderRadius: '100%',
+                          borderColor: `${colorRate}`,
                         }}
                       >
                         {rate}
@@ -165,7 +151,7 @@ export default function MovieItem({ movie, movieId, image, date, rate, colorRate
                       count={10}
                       defaultValue={myRate ? myRate : 0}
                       allowHalf
-                      style={{ position: 'absolute', bottom: '10px', right: '5px' }}
+                      className={'cardRate'}
                       onChange={(e) => {
                         const rateOptions = {
                           method: 'POST',

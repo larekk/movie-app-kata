@@ -1,0 +1,16 @@
+.noResults{
+    padding-top: 10px;
+    margin: 0
+}
+
+.defaultStyle{
+    background: none;
+    margin: 0;
+    padding: 0
+}
+
+.defaultStyleMargin{
+    background: none;
+    margin: -30px 0 0 0;
+    padding: 0
+}

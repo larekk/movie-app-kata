@@ -1,11 +1,12 @@
 import { Flex, Input } from 'antd'
+import './search.css'
 
 export default function Search({ searchUnratedFilms, setSearchLoading }) {
   return (
-    <Flex wrap gap={36} style={{ maxWidth: '944px', margin: '0 auto' }}>
+    <Flex wrap gap={36} className={'flexSearchContainer'}>
       <Input
         placeholder="Type to search..."
-        style={{ maxWidth: '944px' }}
+        className={'search'}
         onChange={(e) => {
           setSearchLoading()
           return searchUnratedFilms(e.target.value)
