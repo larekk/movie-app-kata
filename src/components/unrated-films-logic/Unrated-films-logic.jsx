@@ -1,4 +1,4 @@
-export default class Unratedfilms {
+export default class UnratedFilmsLogic {
   async getUnratedMovies(search, currentPage, setUnratedMovieList, setTotalPages, setLoading, setError) {
     const options = {
       method: 'GET',
